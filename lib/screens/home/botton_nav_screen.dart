@@ -1,3 +1,4 @@
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
@@ -8,7 +9,11 @@ import 'package:plugs_app/screens/home/chat_screen.dart';
 import 'package:plugs_app/screens/home/home_screen.dart';
 import 'package:plugs_app/screens/home/plugs_screen.dart';
 import 'package:plugs_app/screens/home/search_screen.dart';
+import 'package:plugs_app/screens/settings/profile_screen.dart';
 import 'package:plugs_app/utils/ui.dart';
+import 'package:plugs_app/widgets/drawer_tile.dart';
+
+import '../open_chat.dart';
 
 class BottomNavScreen extends StatefulWidget {
   BottomNavScreen({Key? key}) : super(key: key);
@@ -47,8 +52,9 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
             elevation: 0,
             iconSize: 30.sp,
             backgroundColor: primaryLightBgColor,
-            fixedColor: primaryLightBgColor,
+            // fixedColor: primaryLightBgColor,
             showSelectedLabels: false,
+            selectedItemColor: primaryLighterBgColor,
             showUnselectedLabels: false,
             type: BottomNavigationBarType.fixed,
             items: [
@@ -56,28 +62,36 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                   label: "Home",
                   icon: Iconify(
                     Majesticons.home,
-                    color: primaryIconColor,
+                    color: currentScreenIndex == 0
+                        ? primaryColor
+                        : primaryIconColor,
                     size: 30.sp,
                   )),
               BottomNavigationBarItem(
                   label: "Users",
                   icon: Iconify(
                     Majesticons.users,
-                    color: primaryIconColor,
+                    color: currentScreenIndex == 1
+                        ? primaryColor
+                        : primaryIconColor,
                     size: 30.sp,
                   )),
               BottomNavigationBarItem(
                   label: "Search",
                   icon: Iconify(
                     Majesticons.search,
-                    color: primaryIconColor,
+                    color: currentScreenIndex == 2
+                        ? primaryColor
+                        : primaryIconColor,
                     size: 30.sp,
                   )),
               BottomNavigationBarItem(
                   label: "Chats",
                   icon: Iconify(
                     Majesticons.chat,
-                    color: primaryIconColor,
+                    color: currentScreenIndex == 3
+                        ? primaryColor
+                        : primaryIconColor,
                     size: 30.sp,
                   ))
             ],
@@ -94,29 +108,42 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 DrawerHeader(
+
                   decoration: BoxDecoration(
                     color: primaryColor,
                   ),
-                  child: Text(
-                    "Plugs App",
-                    style: TextStyle(fontSize: 18.sp),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"),
+                      ),
+                      addHorizontalSpace(10.w),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Plugs App",
+                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w700),
+                          ),
+                          addHorizontalSpace(5.h),
+                          Text(
+                            "Welcome ${faker.person.name()}",
+                            style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w400,),
+                          ),
+                        ],
+                      ),
+
+                    ],
                   ),
                 ),
-                ListTile(
-                  title: Text("Profile"),
-                ),
-                ListTile(
-                  title: Text("Settings"),
-                ),
-                ListTile(
-                  title: Text("Notifications"),
-                ),
-                ListTile(
-                  title: Text("Contact Us"),
-                ),
-                ListTile(
-                  title: Text("Help"),
-                ),
+                DrawerTile(title:'Profile', icon: Icons.person_outlined, onTap: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfileScreen()));}),
+                DrawerTile(title:'Settings', icon: Icons.settings_outlined),
+                DrawerTile(title:'Notifications', icon: Icons.notifications_outlined),
+                DrawerTile(title:'Contact Us', icon: Icons.phone_outlined),
+                DrawerTile(title:'Help', icon: Icons.help_outlined),
+
               ],
             ),
             ListTile(
@@ -140,12 +167,15 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
         titleSpacing: 0,
         actions: [
           //Display add button only if user is in the chats screen
-          if(currentScreenIndex == 3)
-          FloatingActionButton(
-            elevation: 0,
-            onPressed: () {},
-            child: Icon(Icons.add, size: 30.sp),
-          ),
+          if (currentScreenIndex == 3)
+            FloatingActionButton(
+              elevation: 0,
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => OpenChat()));
+              },
+              child: Icon(Icons.add, size: 30.sp),
+            ),
           addHorizontalSpace(20.w)
         ],
         leading: Padding(
@@ -158,10 +188,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               child: Ink(
                 child: CircleAvatar(
                   child: Icon(
-                    Icons.person_outline,
+                    Icons.menu,
                   ),
-                  backgroundImage: NetworkImage(
-                      "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"),
+                  // backgroundImage: NetworkImage(
+                  //     "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"),
                 ),
               ),
             ),
