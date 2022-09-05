@@ -2,14 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/majesticons.dart';
 import 'package:plugs_app/screens/auth/forgot_password.dart';
+import 'package:plugs_app/screens/auth/signup.dart';
 import 'package:plugs_app/screens/home/botton_nav_screen.dart';
+import 'package:plugs_app/utils/ui.dart';
 import 'package:plugs_app/widgets/pg_input_field.dart';
 import 'package:plugs_app/constants/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:plugs_app/widgets/pg_primary_button.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+import '../../dummy_data/credentials.dart';
+
+class LoginScreen extends StatefulWidget {
+  LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool _passwordIsVisible = false;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passowrdController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +41,7 @@ class LoginScreen extends StatelessWidget {
             ),
             SizedBox(height: 70.h),
             PGInputField(
-              controller: null,
+              controller: _emailController,
               hintText: "Email",
               icon: IconButton(
                   onPressed: () {},
@@ -37,14 +50,24 @@ class LoginScreen extends StatelessWidget {
             ),
             SizedBox(height: 30),
             PGInputField(
-              controller: null,
+              obscureText: !_passwordIsVisible,
+              controller: _passowrdController,
               hintText: "Password",
               icon: IconButton(
-                onPressed: () {},
-                icon: const Iconify(
-                  Majesticons.eye,
-                  color: primaryIconColor,
-                ),
+                onPressed: () {
+                  setState(() {
+                    _passwordIsVisible = !_passwordIsVisible;
+                  });
+                },
+                icon: _passwordIsVisible
+                    ? Iconify(
+                        Majesticons.eye,
+                        color: primaryIconColor,
+                      )
+                    : Iconify(
+                        Majesticons.eye_off,
+                        color: primaryIconColor,
+                      ),
               ),
             ),
             SizedBox(height: 10),
@@ -64,8 +87,11 @@ class LoginScreen extends StatelessWidget {
                   ],
                 ),
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ForgotPasswordScreen()));
+
+
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ForgotPasswordScreen()));
+
                 },
               ),
             ),
@@ -75,6 +101,17 @@ class LoginScreen extends StatelessWidget {
             Center(
                 child: PGPrimaryButton(
                     onPress: () {
+                      if (_emailController.text != LoginCredentials.email ||
+                          _passowrdController.text != LoginCredentials.password) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                            "Wrong credentials",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Colors.red,
+                        ));
+                        return;
+                      }
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (context) => BottomNavScreen(),
@@ -82,6 +119,20 @@ class LoginScreen extends StatelessWidget {
                           (route) => false);
                     },
                     text: "LOGIN")),
+            addVerticalSpace(8.h),
+            Center(
+                child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => SignupScreen(),
+                          ),
+                          (route) => false);
+                    },
+                    child: Text(
+                      "New to Plug Me ? Sign Up",
+                      style: TextStyle(color: primaryColor),
+                    ))),
             SizedBox(
               height: 60,
             ),

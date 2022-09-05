@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.group31.plugs_app">
-   <application
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
         android:label="plugs_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

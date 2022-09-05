@@ -165,19 +165,19 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
         backgroundColor: Colors.transparent,
         leadingWidth: 80.w,
         titleSpacing: 0,
-        actions: [
-          //Display add button only if user is in the chats screen
-          if (currentScreenIndex == 3)
-            FloatingActionButton(
-              elevation: 0,
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => OpenChat()));
-              },
-              child: Icon(Icons.add, size: 30.sp),
-            ),
-          addHorizontalSpace(20.w)
-        ],
+        // actions: [
+        //   //Display add button only if user is in the chats screen
+        //   if (currentScreenIndex == 3)
+        //     FloatingActionButton(
+        //       elevation: 0,
+        //       onPressed: () {
+        //         Navigator.of(context)
+        //             .push(MaterialPageRoute(builder: (context) => OpenChat()));
+        //       },
+        //       child: Icon(Icons.add, size: 30.sp),
+        //     ),
+        //   addHorizontalSpace(20.w)
+        // ],
         leading: Padding(
           padding: EdgeInsets.only(left: 20.w),
           child: InkWell(

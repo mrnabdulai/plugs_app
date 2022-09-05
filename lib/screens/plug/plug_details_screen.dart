@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:plugs_app/constants/colors.dart';
 import 'package:plugs_app/utils/ui.dart';
 
+import '../../utils/math_util.dart';
 import '../../widgets/pg_action_container.dart';
 import '../../widgets/plugs/review_card.dart';
 
@@ -61,11 +62,29 @@ class PlugDetailsScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.star,
-                  color: Colors.yellow,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.star,
+                      color: Colors.yellow,
+                    ),
+                    Text("4.2"),
+                  ],
                 ),
-                Text("4.2"),
+                addHorizontalSpace(5.w),
+                VerticalDivider(width: 1, color: Colors.white, thickness: 5),
+                addHorizontalSpace(5.w),
+                Row(
+                  children: [
+                    Text(
+                      "48 Orders",
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    )
+                  ],
+                )
               ],
             ),
             addVerticalSpace(24.h),
@@ -113,6 +132,48 @@ class PlugDetailsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
+                  "Products",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w600),
+                ),
+                Icon(
+                  Icons.shopping_bag,
+                  color: primaryIconColor,
+                )
+              ],
+            ),
+            addVerticalSpace(15.h),
+
+            Container(
+              height: 150.h,
+              child: ListView.builder(
+                itemCount: 10,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (index, context) => Container(
+                  width: 130.w,
+                  margin: EdgeInsets.only(right: 20.w),
+                  height: 150.h,
+                  decoration: BoxDecoration(
+                    color: primaryLighterBgColor,
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.r),
+                    child: Image.network(
+                      MathUtil.getRandomImgUrl(),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            addVerticalSpace(30.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
                   "Reviews ",
                   style: TextStyle(
                       color: Colors.white,
@@ -127,16 +188,10 @@ class PlugDetailsScreen extends StatelessWidget {
             ),
             addVerticalSpace(15.h),
             ReviewCard(),
-
-            ReviewCard(),
-
             ReviewCard(),
             ReviewCard(),
-
             ReviewCard(),
-
-
-
+            ReviewCard(),
           ],
         ),
       ),
